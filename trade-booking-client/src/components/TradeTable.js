@@ -1,16 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTrades } from "../tradesSlice";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Table, Spinner, Alert } from "react-bootstrap";
 
 function TradeTable() {
   const trades = useSelector((state) => state.trades.trades);
@@ -24,28 +15,26 @@ function TradeTable() {
   }, [dispatch]);
 
   if (status === "loading") {
-    return <Typography>Loading...</Typography>;
+    return <Spinner animation="border" />;
   }
 
   if (status === "failed") {
-    return <Typography>Error: {error}</Typography>;
+    return <Alert variant="danger">Error: {error}</Alert>;
   }
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 4 }}>
-      <Typography variant="h5" gutterBottom sx={{ p: 2 }}>
-        Trades
-      </Typography>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Symbol</TableCell>
-            <TableCell>Quantity</TableCell>
-            <TableCell>Price</TableCell>
-            <TableCell>Time</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
+    <div className="mt-4">
+      <h5 className="mb-3">Trades</h5>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
           {trades
             .slice()
             .sort(
@@ -54,16 +43,16 @@ function TradeTable() {
                 a.symbol.localeCompare(b.symbol)
             )
             .map((trade, index) => (
-              <TableRow key={index}>
-                <TableCell>{trade.symbol}</TableCell>
-                <TableCell>{trade.quantity}</TableCell>
-                <TableCell>{trade.price}</TableCell>
-                <TableCell>{trade.time}</TableCell>
-              </TableRow>
+              <tr key={index}>
+                <td>{trade.symbol}</td>
+                <td>{trade.quantity}</td>
+                <td>{trade.price}</td>
+                <td>{trade.time}</td>
+              </tr>
             ))}
-        </TableBody>
+        </tbody>
       </Table>
-    </TableContainer>
+    </div>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { saveTrade } from '../tradesSlice';
-import { Box, Button, Typography } from '@mui/material';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import * as XLSX from 'xlsx';
 
 function BulkUpload() {
@@ -24,15 +24,26 @@ function BulkUpload() {
   };
 
   return (
-    <Box sx={{ mt: 2 }}>
-      <Typography variant="h5" gutterBottom>
-        Bulk Upload
-      </Typography>
-      <Button variant="contained" component="label">
-        Upload File
-        <input type="file" accept=".xlsx, .xls" hidden onChange={handleFileUpload} />
-      </Button>
-    </Box>
+    <Container className="mt-4">
+      <Row>
+        <Col>
+          <h5 className="mb-3">Bulk Upload</h5>
+          <input
+            type="file"
+            accept=".xlsx, .xls"
+            id="fileUpload"
+            style={{ display: 'none' }}
+            onChange={handleFileUpload}
+          />
+          <Button
+            variant="primary"
+            onClick={() => document.getElementById('fileUpload').click()}
+          >
+            Upload File
+          </Button>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
